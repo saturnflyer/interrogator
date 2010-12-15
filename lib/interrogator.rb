@@ -13,17 +13,14 @@ module Interrogator
     @h
   end
   def associated_models_hash
-    result = {
-      :has_many => [],
-      :has_one => [],
-      :belongs_to => []
-    }
-    [:has_many, :has_one, :belongs_to].each do |assoc|
-      reflect_on_all_associations(assoc).each do |reflection|
-        result[assoc] << {:name => reflection.name, :options => reflection.options.tap{|o| o.delete(:extend)}}
+     {}.tap do |hash|
+      [:has_many, :has_one, :belongs_to].each do |assoc|
+        hash[assoc] = []
+        reflect_on_all_associations(assoc).each do |reflection|
+          hash[assoc] << {:name => reflection.name, :options => reflection.options.tap{|o| o.delete(:extend)}}
+        end
       end
     end
-   result
   end
 end
 

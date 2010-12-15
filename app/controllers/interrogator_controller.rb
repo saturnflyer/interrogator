@@ -5,7 +5,7 @@ class InterrogatorController < ApplicationController
     respond_to do |format|
       format.js { render :json => [
         {
-          :columns_hash => klass.simple_columns_hash,
+          :columns => klass.simple_columns_array,
           :associations => klass.associated_models_hash
         }
       ]}

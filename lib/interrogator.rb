@@ -1,16 +1,18 @@
 require 'active_record'
 
 module Interrogator
-  def simple_columns_hash
-    return @h if @h
-    @h = {}
+  def simple_columns_array
+    return @a if @a
+    @a = []
     columns_hash.each{|k, v|
-      @h[k] = {:type => v.type,
+      @a << {
+        :column_name => k,
+        :type => v.type,
         :limit => v.limit,
         :null => v.null
       }
     }
-    @h
+    @a
   end
   def associated_models_hash
      {}.tap do |hash|

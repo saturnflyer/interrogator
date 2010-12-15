@@ -18,26 +18,13 @@ module Interrogator
       :has_one => [],
       :belongs_to => []
     }
-    reflect_on_all_associations(:has_many).each do |reflection|
-      result[:has_many] << {:name => reflection.name, :options => reflection.options.not(:extend)}
+    [:has_many, :has_one, :belongs_to].each do |assoc|
+      reflect_on_all_associations(assoc).each do |reflection|
+        result[assoc] << {:name => reflection.name, :options => reflection.options.tap{|o| o.delete(:extend)}}
+      end
     end
-    reflect_on_all_associations(:has_one).each do |reflection|
-      result[:has_one] << {:name => reflection.name, :options => reflection.options.not(:extend)}
-    end
-    reflect_on_all_associations(:belongs_to).each do |reflection|
-      result[:belongs_to] << {:name => reflection.name, :options => reflection.options.not(:extend)}
-    end
-    result
+   result
   end
 end
-
-unless Hash.instance_methods.include?(:not)
-  class Hash
-    def not(which)
-      self.tap{ |h| h.delete(which) }
-    end
-  end
-end
-
 
 ActiveRecord::Base.send(:extend, Interrogator)

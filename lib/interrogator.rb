@@ -1,7 +1,7 @@
 require 'active_record'
 
 module Interrogator
-  def simple_columns_array
+  def simple_columns_array(sort=true)
     return @a if @a
     @a = []
     columns_hash.each{|k, v|
@@ -12,7 +12,7 @@ module Interrogator
         :null => v.null
       }
     }
-    @a
+    sort ? @a.sort{|a,b| a[:column_name] <=> b[:column_name]} : @a
   end
   def associated_models_hash
      {}.tap do |hash|

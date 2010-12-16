@@ -1,14 +1,25 @@
 class InterrogatorController < ApplicationController
   def show
-    param_class = (params[:klass] || 'Complaint').camelize(:upper)
-    klass = param_class.constantize 
     respond_to do |format|
-      format.js { render :json => [
-        {
-          :columns => klass.simple_columns_array,
-          :associations => klass.associated_models_hash
-        }
-      ]}
+      format.json do
+        param_class = params[:klass].to_s.camelize(:upper)
+        details = {}
+        if param_class.present?
+          klass = param_class.constantize
+          details[:columns] = klass.simple_columns_array
+          details[:associations] = klass.associated_models_hash
+        end
+        render :json => details
+      end
+      format.js do
+        query_options = []
+        query_options.tap do |arr|
+          Interrogator::Conditions.constants.each do |konstant|
+            arr << Interrogator::Conditions.const_get(konstant.to_sym)
+          end
+        end
+        render :json => query_options
+      end
     end
   end
 end

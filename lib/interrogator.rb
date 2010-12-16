@@ -1,5 +1,9 @@
 require 'active_record'
-
+begin
+  require 'searchlogic'
+rescue LoadError
+  STDERR.puts "Interrogator uses Searchlogic to provide query options. You'll need to define these yourself if you don't intend to use Searchlogic"
+end
 module Interrogator
   def simple_columns_array(options={})
     @interrogator_columns_hash ||= columns_hash

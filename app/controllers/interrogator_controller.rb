@@ -12,10 +12,10 @@ class InterrogatorController < ApplicationController
         render :json => details
       end
       format.js do
-        query_options = []
-        query_options.tap do |arr|
+        query_options = {}
+        query_options.tap do |hash|
           Interrogator::Conditions.constants.each do |konstant|
-            arr << Interrogator::Conditions.const_get(konstant.to_sym)
+            hash[konstant.to_sym] = Interrogator::Conditions.const_get(konstant.to_sym)
           end
         end
         render :json => query_options

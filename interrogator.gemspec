@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Jim Gay"]
   s.email       = ["jim@saturnflyer.com"]
-  s.homepage    = ""
+  s.homepage    = "http://github.com/saturnflyer/interrogator"
   s.summary     = %q{Interrogate an ActiveRecord class to get details about attributes and associations.}
   s.description = %q{Ask an ActiveRecord class for details about the database columns and details about the defined associations.}
 

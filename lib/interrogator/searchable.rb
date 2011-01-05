@@ -4,7 +4,7 @@ module Interrogator
     class_inheritable_accessor :excluded_models
     self.excluded_models ||= []
     
-    Rails.configuration.load_paths.map{|p| p.sub(/\/$/,'')}.uniq.each do |load_path|
+    Rails.configuration.load_paths.map{|p| p.sub(/\/$/,'')}.uniq.delete_if{|p| !p.match(/models/)}.each do |load_path|
       Dir.glob(File.join(load_path, '**', 'models', '**', '*.rb')).each { |file|
         unless file.match(/test|spec/) 
           require file

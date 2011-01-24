@@ -35,7 +35,7 @@
     regexs: {
       date: /date|_at|_on|dob/i,
       checkbox: /(^ascend|^descend)|((empty|null|blank)$)/i,
-      skip_queries: /_a(ny|ll)$/i
+      multi_option: /_a(ny|ll)$/i
     },
     callbacks: {
       report: function(){},
@@ -138,7 +138,7 @@
         var typical = []
         for(var i in data['PRIMARY_CONDITIONS'].sort()){
           var query = data['PRIMARY_CONDITIONS'][i]
-          if(!settings.regexs.skip_queries.test(query))
+          if(!settings.regexs.multi_option.test(query))
             typical.push({'condition':data['PRIMARY_CONDITIONS'][i]})
         }
         var standard = {'options':typical}

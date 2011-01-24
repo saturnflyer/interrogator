@@ -6,4 +6,4 @@ rescue LoadError
   STDERR.puts "Interrogator uses Searchlogic to provide query options. You'll need to define these yourself if you don't intend to use Searchlogic"
 end
 
-ActiveRecord::Base.send(:extend, Interrogator::Detailer)
+ActiveRecord::Base.extend(Interrogator::Detailer)

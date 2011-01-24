@@ -28,6 +28,34 @@ module Interrogator
           }
         end
       end
+
+      def sql_select(klass, selection_param, distinct=true)
+        klass_table_name = klass.quoted_table_name
+        selected_columns = selection_param.delete_if{|p| p.blank? }
+        quoted_columns = []
+        selected_columns.each do |column|
+          table_name = nil
+          select_pair = column.split('.')
+          case select_pair.size
+            when 1
+              #current class
+              table_name = klass_table_name
+            when 2
+              # related
+              if select_pair.first != klass.table_name && reflection = klass.reflect_on_association(select_pair.first.to_sym)
+                table_name = (reflection.options[:class_name] || reflection.name.to_s.classify).constantize.quoted_table_name
+              else
+                table_name = klass_table_name
+              end
+            else
+              # 0 or more than 2... something should be done here
+          end
+          column_name = ActiveRecord::Base.connection.quote_column_name(select_pair.last)
+          quoted_columns << "#{table_name}.#{column_name}"
+        end
+        select_string = distinct ? 'DISTINCT ' : ''
+        select_string << quoted_columns.join(', ')
+      end
     end
   end
 end

@@ -1,5 +1,13 @@
 module Interrogator
   module Detailer
+
+    def self.extended(base)
+      base.class_eval{
+        class_inheritable_accessor :characteristics
+        self.characteristics ||= []
+      }
+    end
+
     def simple_columns_array(options={})
       @interrogator_columns_hash ||= columns_hash
       sort = options[:sort]||true
@@ -29,5 +37,10 @@ module Interrogator
         end
       end
     end
+
+    def set_characteristics(*args)
+      self.characteristics += args
+    end
+
   end
 end

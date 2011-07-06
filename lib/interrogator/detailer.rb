@@ -3,8 +3,8 @@ module Interrogator
 
     def self.extended(base)
       base.class_eval{
-        class_inheritable_accessor :characteristics
-        self.characteristics ||= []
+        class_inheritable_accessor :exposed_methods
+        self.exposed_methods ||= []
       }
     end
 
@@ -38,8 +38,12 @@ module Interrogator
       end
     end
 
-    def set_characteristics(*args)
-      self.characteristics += args
+    def expose_methods(*args)
+      self.exposed_methods += args
+    end
+
+    def traits
+      (self.column_names + self.exposed_methods + self.reflections.keys).map(&:to_s).sort
     end
 
   end

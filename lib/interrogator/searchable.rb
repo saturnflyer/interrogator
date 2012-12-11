@@ -1,6 +1,6 @@
 module Interrogator
   class Searchable
-    class_inheritable_accessor :excluded_models
+    class_attribute :excluded_models
     self.excluded_models ||= []
   
     class << self

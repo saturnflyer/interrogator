@@ -3,7 +3,7 @@ module Interrogator
 
     def self.extended(base)
       base.class_eval{
-        class_inheritable_accessor :exposed_methods
+        class_attribute :exposed_methods
         self.exposed_methods ||= []
       }
     end
